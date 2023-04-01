@@ -2,9 +2,8 @@ const { ethers } = require("ethers");
 const { sha256, solidityPack } = require("ethers/lib/utils");
 
 class Tree {
-  depth = 5;
-
-  constructor(addresses) {
+  constructor(addresses, depth) {
+    this.depth = depth;
     this.addresses = addresses;
     this.leafs = [
       ...addresses.map((a) => ethers.utils.sha256(a)),

@@ -9,6 +9,8 @@ const { generateTree, Tree } = require("./utils/tree.js");
 const { sha256 } = require("ethers/lib/utils.js");
 
 describe("Sha256Tree", function () {
+  const depth = 3;
+
   // We define a fixture to reuse the same setup in every test.
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
@@ -26,7 +28,7 @@ describe("Sha256Tree", function () {
         const addresses = ["0x9cA70B93CaE5576645F5F069524A9B9c3aef5006"];
 
         it("computes the root", async function () {
-          const tree = new Tree(addresses);
+          const tree = new Tree(addresses, depth);
           const { sha256Tree } = await loadFixture(deployOneYearLockFixture);
           const input = addresses.map((a) => ethers.utils.sha256(a));
 
@@ -41,7 +43,7 @@ describe("Sha256Tree", function () {
         ];
 
         it("computes the root", async function () {
-          const tree = new Tree(addresses);
+          const tree = new Tree(addresses, depth);
           const { sha256Tree } = await loadFixture(deployOneYearLockFixture);
           const input = addresses.map((a) => ethers.utils.sha256(a));
 
@@ -59,7 +61,7 @@ describe("Sha256Tree", function () {
         ];
 
         it("computes the root", async function () {
-          const tree = new Tree(addresses);
+          const tree = new Tree(addresses, depth);
           const input = addresses.map((a) => ethers.utils.sha256(a));
           const { sha256Tree } = await loadFixture(deployOneYearLockFixture);
           expect(await sha256Tree.computeRoot(input)).to.equal(tree.root);
@@ -75,7 +77,7 @@ describe("Sha256Tree", function () {
         ];
 
         it("computes the root", async function () {
-          const tree = new Tree(addresses);
+          const tree = new Tree(addresses, depth);
           const input = addresses.map((a) => ethers.utils.sha256(a));
           const { sha256Tree } = await loadFixture(deployOneYearLockFixture);
           expect(await sha256Tree.computeRoot(input)).to.equal(tree.root);
@@ -94,7 +96,7 @@ describe("Sha256Tree", function () {
         ];
 
         it("computes the root", async function () {
-          const tree = new Tree(addresses);
+          const tree = new Tree(addresses, depth);
           const input = addresses.map((a) => ethers.utils.sha256(a));
           const { sha256Tree } = await loadFixture(deployOneYearLockFixture);
           expect(await sha256Tree.computeRoot(input)).to.equal(tree.root);
@@ -112,7 +114,7 @@ describe("Sha256Tree", function () {
         ];
 
         it("computes the root", async function () {
-          const tree = new Tree(addresses);
+          const tree = new Tree(addresses, depth);
           const input = addresses.map((a) => ethers.utils.sha256(a));
           const { sha256Tree } = await loadFixture(deployOneYearLockFixture);
           expect(await sha256Tree.computeRoot(input)).to.equal(tree.root);
@@ -129,7 +131,7 @@ describe("Sha256Tree", function () {
       ];
 
       it("validates the proof", async () => {
-        const tree = new Tree(addresses);
+        const tree = new Tree(addresses, depth);
         const merkleProof = tree.getProof(addresses[1]);
         const { sha256Tree } = await loadFixture(deployOneYearLockFixture);
         const root = await sha256Tree.verifyProof(tree.leafs[1], merkleProof);
@@ -145,7 +147,7 @@ describe("Sha256Tree", function () {
       ];
 
       it("validates the proof", async () => {
-        const tree = new Tree(addresses);
+        const tree = new Tree(addresses, depth);
         const merkleProof = tree.getProof(addresses[2]);
         const { sha256Tree } = await loadFixture(deployOneYearLockFixture);
         const root = await sha256Tree.verifyProof(tree.leafs[2], merkleProof);

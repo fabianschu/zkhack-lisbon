@@ -4,7 +4,7 @@ pragma solidity ^0.8.9;
 import "hardhat/console.sol";
 
 contract Sha256Tree {
-    uint256 constant depth = 5;
+    uint256 constant depth = 3;
 
     bytes32 constant level0 = 0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855; // sha256("")
     bytes32 constant level1 = 0x2dba5dbc339e7316aea2683faf839c1b7b1ee2313db792112588118df066aa35; // two empty leaf siblings produce this hash

@@ -27,7 +27,7 @@ describe("Hasher", function () {
   const b32 = addresses.map((a) => ethers.utils.sha256(a));
 
   describe("#hash", function () {
-    it.only("equals ethers sha256", async function () {
+    it("equals ethers sha256", async function () {
       // const zero = ethers.utils.hexlify([]);
       const zero = ethers.utils.arrayify(ethers.constants.HashZero);
       // console.log(zero);
