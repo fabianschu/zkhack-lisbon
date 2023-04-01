@@ -85,5 +85,22 @@ describe("Hasher", function () {
 
       expect(solidityHash).to.equal(ethersHash);
     });
+
+    // it("produces same hash as noir", async () => {
+    //   console.log(new Array(32).fill(2));
+    //   console.log(new Array(32).fill(1));
+    //   const x = ethers.utils.hexlify(new Array(32).fill(2));
+    //   const y = ethers.utils.hexlify(new Array(32).fill(1));
+
+    //   const { hasher } = await loadFixture(deployOneYearLockFixture);
+
+    //   const solidityHash = await hasher.concatBytes32Hash(x, y);
+    //   const ethersHash = ethers.utils.sha256(
+    //     await ethers.utils.solidityPack(["bytes32", "bytes32"], [x, y])
+    //   );
+    //   console.log(ethers.utils.arrayify(ethersHash));
+
+    //   // expect(solidityHash).to.equal(ethersHash);
+    // });
   });
 });

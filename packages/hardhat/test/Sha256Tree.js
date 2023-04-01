@@ -46,7 +46,6 @@ describe("Sha256Tree", function () {
           const tree = new Tree(addresses, depth);
           const { sha256Tree } = await loadFixture(deployOneYearLockFixture);
           const input = addresses.map((a) => ethers.utils.sha256(a));
-
           expect(await sha256Tree.computeRoot(input)).to.equal(tree.root);
         });
       });
@@ -124,7 +123,7 @@ describe("Sha256Tree", function () {
   });
 
   describe("#validateProof", () => {
-    context("with two leafs", () => {
+    context.only("with two leafs", () => {
       const addresses = [
         "0x9cA70B93CaE5576645F5F069524A9B9c3aef5006",
         "0xb5aE5169F4D750e802884d81b4f9eC66c525396F",
@@ -133,6 +132,12 @@ describe("Sha256Tree", function () {
       it("validates the proof", async () => {
         const tree = new Tree(addresses, depth);
         const merkleProof = tree.getProof(addresses[1]);
+        console.log(tree.leafs[1]);
+        console.log("leaf: ", ethers.utils.arrayify(tree.leafs[1]));
+        console.log(
+          merkleProof.map(({ value }) => ethers.utils.arrayify(value))
+        );
+        console.log(ethers.utils.arrayify(tree.root));
         const { sha256Tree } = await loadFixture(deployOneYearLockFixture);
         const root = await sha256Tree.verifyProof(tree.leafs[1], merkleProof);
         expect(root).to.equal(tree.root);
