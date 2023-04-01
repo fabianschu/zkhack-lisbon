@@ -1,13 +1,22 @@
 const { ethers } = require("ethers");
-const { sha256, solidityPack } = require("ethers/lib/utils");
+const { sha256, solidityPack, toUtf8Bytes } = require("ethers/lib/utils");
 
 class Tree {
-  constructor(addresses, depth) {
+  constructor(commitments, depth, reputation) {
     this.depth = depth;
-    this.addresses = addresses;
+    this.commitments = commitments;
+    let concatCommmit;
+
+    // if (reputation) {
+    //   concatCommmit = commitments.map((elem, index) =>
+    //     toUtf8Bytes(elem + reputation[index])
+    //   );
+    //   commitments = concatCommmit.slice();
+    // }
+    // console.log(commitments);
     this.leafs = [
-      ...addresses.map((a) => ethers.utils.sha256(a)),
-      ...new Array(2 ** this.depth - addresses.length).fill(
+      ...commitments.map((a) => ethers.utils.sha256(a)),
+      ...new Array(2 ** this.depth - commitments.length).fill(
         sha256(ethers.utils.hexlify([]))
       ),
     ];
@@ -33,7 +42,7 @@ class Tree {
 
   getProof(address) {
     const merkleProof = [];
-    let currentIndex = this.addresses.findIndex((el) => el === address);
+    let currentIndex = this.commitments.findIndex((el) => el === address);
 
     for (const layer of this.layers) {
       if (layer.length === 1) break;
