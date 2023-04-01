@@ -28,21 +28,10 @@ describe("Hasher", function () {
 
   describe("#hash", function () {
     it("equals ethers sha256", async function () {
-      // const zero = ethers.utils.hexlify([]);
       const zero = ethers.utils.arrayify(ethers.constants.HashZero);
-      // console.log(zero);
       const { hasher } = await loadFixture(deployOneYearLockFixture);
-      // console.log(ethers.utils.arrayify(ethers.constants.HashZero));
       const solidityHash = await hasher.hash(zero);
       const ethersHash = await ethers.utils.sha256(zero);
-      console.log(ethersHash);
-      console.log(ethers.utils.arrayify(ethersHash));
-      // Uint8Array(32) [
-      //   102, 104, 122, 173, 248,  98, 189, 119,
-      //   108, 143, 193, 139, 142, 159, 142,  32,
-      //     8, 151,  20, 133, 110, 226,  51, 179,
-      //   144,  42,  89,  29,  13,  95,  41,  37
-      // ]
       expect(solidityHash).to.equal(ethersHash);
     });
 
