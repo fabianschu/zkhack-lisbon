@@ -24,7 +24,37 @@ contract Sha256Tree {
     
     constructor() {}
 
+    function validateSorting(bytes32[] memory rawValues) internal view {
+        uint256 length = rawValues.length;
+        for(uint i = 0; i < length; ++i) {
+            if (i + 1 <= length - 1) {
+                require(rawValues[i] < rawValues[i + 1], "Not sorted");
+            }
+        }
+    }
+
+    function hashRawValuesAndReputation(bytes32[] memory rawValues,  bytes32[] memory reputations) internal view returns (bytes32[] memory){
+        require(rawValues.length == reputations.length, "Array lengths not match");
+
+        uint256 length = rawValues.length;
+
+        bytes32[] memory hashes = new bytes32[](length);
+        for(uint i = 0; i < length; ++i) {
+            string memory concatenated = string(abi.encodePacked(rawValues[i], reputations[i]));
+            hashes[i] = sha256(abi.encodePacked(concatenated));
+        }
+        return hashes;
+    }
+
     function computeRoot(bytes32[] memory hashes) public view returns (bytes32) {
+        return _computeRoot(hashes, 0);
+    }
+
+    function computeSortedRawValues(bytes32[] memory rawValues, bytes32[] memory reputations) public view returns (bytes32) {
+        validateSorting(rawValues);
+
+        bytes32[] memory hashes = hashRawValuesAndReputation(rawValues, reputations);
+
         return _computeRoot(hashes, 0);
     }
 
@@ -55,7 +85,7 @@ contract Sha256Tree {
     }
 
     function _getConstant(uint256 level) internal pure returns (bytes32) {
-        if(level == 0) return level0; // empty leaf pair
+        if(level == 0) return level0; // empty leaf
         else if(level == 1) return level1;
         else if(level == 2) return level2;
         else if(level == 3) return level3;
